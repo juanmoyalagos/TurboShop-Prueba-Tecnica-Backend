@@ -1,6 +1,9 @@
 import { sleep } from "./sleep";
+import dotenv from "dotenv";
 
-const API_BASE_URL = "https://web-production-84144.up.railway.app/api/";
+dotenv.config();
+
+const API_BASE_URL = process.env.PROVIDER_API_BASE_URL;
 const DEFAULT_LIMIT = 50;
 const MAX_RETRIES = 3;
 const BACKOFF_MS = 500;
