@@ -1,19 +1,29 @@
 import "reflect-metadata";
 import express, { Application, Request, Response } from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import { sequelize } from "./db";
+import routes from "./router";
 
 dotenv.config();
 
 const app: Application = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const PORT = Number(process.env.PORT || 3000);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Express & TypeScript Server");
+  res.send("Bienvenido al servidor de Express & TypeScript");
 });
+
+app.use(routes);
 
 async function main() {
   try {
@@ -21,7 +31,7 @@ async function main() {
     console.log("DB conectada");
 
     app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
     });
   } catch (err) {
     console.error("Error iniciando servidor/DB:", err);
