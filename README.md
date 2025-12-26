@@ -7,7 +7,7 @@ Este proyecto es una aplicación que unifica los datos de los diferentes proveed
 - Yarn
 - PostgreSQL
 
-## 🛠️ Instalación del proyecto
+## 🛠️ Instalación local del proyecto 
 
 1. **Clonar el repositorio**
 
@@ -92,6 +92,7 @@ La aplicación cuenta con una base de datos relacional con 5 modelos en los cual
 - Image: noté que la información de los repuestos incluye una lista de URLs de imágenes para cada uno. Creé este modelo para almacenarlas, y no tenerlas como una lista en el modelo product.
 - VehicleFit: cada repuesto tiene vehículos compatibles, este modelo los almacena y los relaciona con productos.
 
+!! En caso de que se caigan los proveedores, aún se podrá acceder a esta información persistente de la última actualización.
 ## 🔌 Adapters
 
 Cada proveedor tiene su propio adaptador que normaliza la información proveniente de sus APIs, estos se encuentran en (`src/adapters`). La estructura junto al poller permite extensibilidad en caso de que hayan más proveedores(asumiendo que siguen una estructura similar las APIs).
@@ -104,7 +105,14 @@ El poller (`src/poller.ts`) corre cada 5 segundos y orquesta en paralelo los ada
 
 Cada adaptador recibe la data de su proveedor, y la normaliza creando y/o actualizando si es necesario las filas de las diferentes tablas de las BDD. Como se mencionó anteriormente, este poller es disparado automáticamente al haber al menos un cliente SSE conectado y se detiene cuando no quedan suscriptores.
 
-El fetching de datos cuenta con mecanismos de retry en caso de que haya error con algún proveedor.
+El fetching de datos (`src/lib/apiFetch.ts`) cuenta con mecanismos de retry en caso de que haya error con algún proveedor.
+
+## 🔔 Server-Sent Events (SSE)
+
+- Endpoint: `GET /sse/events` devuelve un stream `text/event-stream`.
+- Funcionamiento: al primer cliente conectado se inicia el poller; cuando no quedan suscriptores se detiene para ahorrar recursos.
+- Disparadores: cada vez que el poller detecta cambios en precio/stock o nuevas ofertas, se emite un evento `data: {...}` que el frontend consume para actualizarse sin recargar la página.
+- Keep-alive: se envían líneas `: keep-alive` cada 15s para mantener abierta la conexión.
 
 ## 🌐 Endpoints principales
 - `GET /` – Health simple.
@@ -114,3 +122,4 @@ El fetching de datos cuenta con mecanismos de retry en caso de que haya error co
 
 ## ⚠️ Dificultades / pendientes
 - Las URL de las imágenes no se pudieron mostrar en las vistas de detalle por repuesto (están como placeholder), pero la funcionalidad está implementada en caso de que sean válidas.
+- Hay algunos campos de información de las APIs que no se incluyen en los modelos de la base de datos. Se priorizó mostrar lo más relevante por cada modelo. Es modificable.
