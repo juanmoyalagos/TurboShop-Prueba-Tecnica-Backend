@@ -11,10 +11,11 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173",
     credentials: true,
   })
 );
+
 app.use(express.json());
 
 const PORT = Number(process.env.PORT || 3000);
