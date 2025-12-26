@@ -92,7 +92,8 @@ La aplicación cuenta con una base de datos relacional con 5 modelos en los cual
 - Image: noté que la información de los repuestos incluye una lista de URLs de imágenes para cada uno. Creé este modelo para almacenarlas, y no tenerlas como una lista en el modelo product.
 - VehicleFit: cada repuesto tiene vehículos compatibles, este modelo los almacena y los relaciona con productos.
 
-!! En caso de que se caigan los proveedores, aún se podrá acceder a esta información persistente de la última actualización.
+> **Importante:** si los proveedores están caídos, aún se puede acceder a la información persistente de la última actualización.
+
 ## 🔌 Adapters
 
 Cada proveedor tiene su propio adaptador que normaliza la información proveniente de sus APIs, estos se encuentran en (`src/adapters`). La estructura junto al poller permite extensibilidad en caso de que hayan más proveedores(asumiendo que siguen una estructura similar las APIs).
