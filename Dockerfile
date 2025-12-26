@@ -4,9 +4,8 @@ WORKDIR /app
 
 COPY package.json yarn.lock* ./
 COPY .yarnrc.yml ./
-COPY .yarn/ .yarn/
 
-RUN corepack enable && yarn install --immutable
+RUN corepack enable && yarn install --immutable || yarn install
 
 COPY . .
 
