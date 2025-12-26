@@ -124,3 +124,5 @@ El fetching de datos (`src/lib/apiFetch.ts`) cuenta con mecanismos de retry en c
 ## ⚠️ Dificultades / pendientes
 - Las URL de las imágenes no se pudieron mostrar en las vistas de detalle por repuesto (están como placeholder), pero la funcionalidad está implementada en caso de que sean válidas.
 - Hay algunos campos de información de las APIs que no se incluyen en los modelos de la base de datos. Se priorizó mostrar lo más relevante por cada modelo. Es modificable.
+- El tiempo entre cada fetch de información está en 5 segundos, intentando simular datos en tiempo real. Probando la API, noté que los cambios son algo habituales pero no tan seguidos, por lo cual 5 segundos es mucho más que necesario para tener la información actualizada.
+- Actualmente, solo se envian actualizaciones en caso de precio y stock, se asume que no cambian muchos los datos de detalles de los productos. Se optó por esto para enviar menos información.
