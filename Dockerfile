@@ -13,5 +13,5 @@ RUN yarn build
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "yarn sequelize-cli db:migrate && node dist/index.js"]
+CMD ["sh", "-c", "yarn sequelize-cli db:migrate && yarn sequelize-cli db:seed:all && node dist/index.js"]
 
