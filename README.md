@@ -96,7 +96,7 @@ La aplicación cuenta con una base de datos relacional con 5 modelos en los cual
 
 ## 🔌 Adapters
 
-Cada proveedor tiene su propio adaptador que normaliza la información proveniente de sus APIs, estos se encuentran en (`src/adapters`). La estructura junto al poller permite extensibilidad en caso de que hayan más proveedores(asumiendo que siguen una estructura similar las APIs).
+Cada proveedor tiene su propio adaptador que normaliza la información proveniente de sus APIs, estos se encuentran en (`src/adapters`). La estructura junto al poller permite extensibilidad en caso de que hayan más proveedores(asumiendo que siguen una estructura similar las APIs): se agrega a la lista de adaptadores que se ejecutan en el poller.
 
 ## ⏱️ Poller
 El poller (`src/poller.ts`) corre cada 5 segundos y orquesta en paralelo los adaptadores de todos los proveedores:
