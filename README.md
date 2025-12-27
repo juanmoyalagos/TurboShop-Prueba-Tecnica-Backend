@@ -80,7 +80,7 @@ Dado lo anterior, se tomaron las siguientes decisiones:
 
 - Dado que la url de la cual se accede a los diferentes proveedores es una simple API sin mecanismos de comunicación en tiempo real, para simular el "tiempo real" se usa un poller que hace fetching cada cierto tiempo de todas las APIs de los proveedores paralelamente para tener la información de los repuestos al día.
 - El frontend no tiene que mandarle información al backend, por lo tanto se implementaron Server-Sent Events para actualizar el frontend en caso de que se detecten cambios en el precio/stock de un producto existente, o si se detecta una oferta nueva para un producto.
-- En esta implementación, para no consumir recursos  en Railway, solo se activa el poller cuando se detecta un usuario en las vistas de repuestos general o el detalle de un repuesto. Esto es un trade-off en este caso, porque se podría enviar información de un repuesto específico cuando no hay nadie en la página. Sin embargo, esto se puede aliviar haciendo un fetching constante cada cierto tiempo de las APIs de los proveedores.
+- En esta implementación, para no consumir recursos excesivos en Railway, solo se activa el poller cuando se detecta un usuario en las vistas de repuestos general o el detalle de un repuesto. Esto es un trade-off en este caso, porque se podría enviar información de un repuesto específico cuando no hay nadie en la página. Sin embargo, esto se puede aliviar haciendo un fetching constante cada cierto tiempo de las APIs de los proveedores.
 
 ## 🧱 Modelos
 
@@ -92,7 +92,7 @@ La aplicación cuenta con una base de datos relacional con 5 modelos en los cual
 - Image: noté que la información de los repuestos incluye una lista de URLs de imágenes para cada uno. Creé este modelo para almacenarlas, y no tenerlas como una lista en el modelo product.
 - VehicleFit: cada repuesto tiene vehículos compatibles, este modelo los almacena y los relaciona con productos.
 
-> **Importante:** si los proveedores están caídos, aún se puede acceder a la información persistente de la última actualización.
+> **Importante:** si los proveedores están caídos, aún se puede acceder a la información persistente de la última actualización en el backend, otorgando disponibilidad y consistencia en el frontend.
 
 ## 🔌 Adapters
 
@@ -125,4 +125,4 @@ El fetching de datos (`src/lib/apiFetch.ts`) cuenta con mecanismos de retry en c
 - Las URL de las imágenes no se pudieron mostrar en las vistas de detalle por repuesto (están como placeholder), pero la funcionalidad está implementada en caso de que sean válidas.
 - Hay algunos campos de información de las APIs que no se incluyen en los modelos de la base de datos. Se priorizó mostrar lo más relevante por cada modelo. Es modificable.
 - El tiempo entre cada fetch de información está en 5 segundos, intentando simular datos en tiempo real. Probando la API, noté que los cambios son algo habituales pero no tan seguidos, por lo cual 5 segundos es mucho más que necesario para tener la información actualizada.
-- Actualmente, solo se envian actualizaciones en caso de precio y stock, se asume que no cambian muchos los datos de detalles de los productos. Se optó por esto para enviar menos información.
+- Actualmente, solo se envian actualizaciones en caso de precio y stock, se asume que no cambian muchos los datos de detalles de los productos. Se optó por esto para enviar solo la información necesaria, sin saturar con redundancia.
